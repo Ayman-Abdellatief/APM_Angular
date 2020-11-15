@@ -23,6 +23,7 @@ export class ProductListComponent implements OnInit{
           this._listFilter=value;
           this.filteredProducts = this.listFilter? this.peformFilter(this.listFilter):this.products; 
         }   
+  erroeMessage : string;
 
     filteredProducts : IProduct[];
     products:IProduct[]=[];
@@ -30,8 +31,14 @@ export class ProductListComponent implements OnInit{
       constructor(private productService: ProductService){
       }
       ngOnInit(): void {
-        this.products = this.productService.getProduct() ;
-        this.filteredProducts = this.products;
+       this.productService.getProduct().subscribe({
+         next: products => {
+           this.products = products
+          this.filteredProducts = this.products;
+        
+        },
+         error: err =>this.erroeMessage  =err
+       }) ;
 
       }
 
